@@ -20,6 +20,7 @@ class LargeFileUploaderServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasAssets()
             ->hasViewComponent('chunk-file-upload-input','ChunkFileUploadInput')
+            ->hasViews()
             ->hasInstallCommand(function(InstallCommand $command) {
                 $command
                     ->publishConfigFile()

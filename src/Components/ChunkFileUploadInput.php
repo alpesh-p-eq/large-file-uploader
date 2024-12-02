@@ -22,6 +22,6 @@ class ChunkFileUploadInput extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.pagination');
+        return view('components.chunk-file-upload-input');
     }
 }
