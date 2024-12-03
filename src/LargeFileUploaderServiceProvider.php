@@ -26,8 +26,7 @@ class LargeFileUploaderServiceProvider extends PackageServiceProvider
                 $command
                     ->publishConfigFile()
                     ->publishAssets()
-                    ->publish('web')
-                    ->publish('components');
+                    ->publish('web');
             });
     }
 }
