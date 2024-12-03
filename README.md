@@ -7,27 +7,11 @@
 
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/large-file-uploader.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/large-file-uploader)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
-## Installation
 
 You can install the package via composer:
 
 ```bash
 composer require alpeshequest/large-file-uploader
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="large-file-uploader-migrations"
-php artisan migrate
 ```
 
 You can publish the config file with:
@@ -40,7 +24,21 @@ This is the contents of the published config file:
 
 ```php
 return [
+    'chunk_path' => storage_path('app/chunks/'),
+    'upload_path' => storage_path('app/uploads/'),
 ];
+```
+
+You must publish the components using
+
+```bash
+php artisan vendor:publish --tag="large-file-uploader-components"
+```
+
+You must publish the assets using
+
+```bash
+php artisan vendor:publish --tag="large-file-uploader-components"
 ```
 
 Optionally, you can publish the views using
@@ -51,9 +49,61 @@ php artisan vendor:publish --tag="large-file-uploader-views"
 
 ## Usage
 
+### Component Usage
+
+```Blade
+        <x-chunk-file-upload-input :suffix="'1'" :containerClass="'extra-class'" />
+```
+### Javascript 
+```Js
+
+<script src="{{assets('vendor/large-file-uploader/js/chunkUploader.js')}}"></script>
+<script>
+    const chunkUploader = new ChunkUploader({
+        form: document.getElementById('uploadForm'),
+        fileInput: document.getElementById('dropzone-file-1'),
+        uploadUrl: '{{route('upload-chunks')}}',
+        mergeUrl: '{{route('merge-chunks')}}',
+        chunkSize: 1024 * 1024,
+        parallelUploads: 3,
+        retries: 3,
+        retryTimeout: 1000,
+        onProgress: (progress) => {
+            document.getElementById('progress-1').innerText = `Upload Processing ${progress}%`;
+            document.getElementById('progress-1').style.width = `${progress}%`;
+        },
+        onSuccess: (response) => {
+            document.getElementById('progress-1').innerText = 'Upload Complete';
+        },
+        onError: (error) => {
+            console.error(error);
+        }
+    });
+
+    document.getElementById('uploadForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        chunkUploader.upload();
+    });
+</script>
+   
+```
+
+### Laravel basic example 
+
 ```php
-$largeFileUploader = new AlpeshEquest\LargeFileUploader();
-echo $largeFileUploader->echoPhrase('Hello, AlpeshEquest!');
+
+Route::post('upload-chunks', function (Request $request, LargeFileUploader $largeFileUploader) {
+    return $largeFileUploader->uploadChunk($request);
+})->name('upload-chunks');
+
+Route::post('merge-chunks', function (Request $request, LargeFileUploader $largeFileUploader) {
+    return $largeFileUploader->mergeChunks($request);
+})->name('merge-chunks');
+
+Route::get('file-upload', function () {
+    return view('large-file-uploader::file-upload');
+})->name('file-upload');
+
 ```
 
 ## Testing

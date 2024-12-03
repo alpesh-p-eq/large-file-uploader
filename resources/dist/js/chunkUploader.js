@@ -109,4 +109,8 @@ class ChunkUploader {
             }
         }
     }
+
+    upload(){
+        this.handleFiles(this.settings.fileInput.files);
+    }
 }
