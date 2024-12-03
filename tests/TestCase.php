@@ -2,9 +2,9 @@
 
 namespace AlpeshEquest\LargeFileUploader\Tests;
 
+use AlpeshEquest\LargeFileUploader\LargeFileUploaderServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use AlpeshEquest\LargeFileUploader\LargeFileUploaderServiceProvider;
 
 class TestCase extends Orchestra
 {

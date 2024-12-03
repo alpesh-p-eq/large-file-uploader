@@ -4,7 +4,8 @@ namespace AlpeshEquest\LargeFileUploader;
 
 use Illuminate\Http\Request;
 
-class LargeFileUploader {
+class LargeFileUploader
+{
     // Handle individual chunk uploads
     public function uploadChunk(Request $request)
     {
@@ -14,7 +15,7 @@ class LargeFileUploader {
 
         // Store each chunk in a temporary directory
         $tempDir = config('large-file-uploader.chunk_path');
-        if (!is_dir($tempDir)) {
+        if (! is_dir($tempDir)) {
             mkdir($tempDir, 0755, true);
         }
 
@@ -30,18 +31,18 @@ class LargeFileUploader {
         $totalChunks = $request->input('total_chunks');
 
         $tempDir = config('large-file-uploader.chunk_path');
-        $finalPath = config('large-file-uploader.upload_path') . $fileName;
+        $finalPath = config('large-file-uploader.upload_path').$fileName;
 
-        if (!is_dir(config('large-file-uploader.upload_path'))) {
+        if (! is_dir(config('large-file-uploader.upload_path'))) {
             mkdir(config('large-file-uploader.upload_path'), 0755, true);
         }
 
         $finalFile = fopen($finalPath, 'wb');
 
         for ($i = 1; $i <= $totalChunks; $i++) {
-            $chunkPath = $tempDir . "{$fileName}.part{$i}";
+            $chunkPath = $tempDir."{$fileName}.part{$i}";
 
-            if (!file_exists($chunkPath)) {
+            if (! file_exists($chunkPath)) {
                 return response()->json(['error' => "Missing chunk {$i}"], 400);
             }
 
@@ -51,6 +52,6 @@ class LargeFileUploader {
 
         fclose($finalFile);
 
-        return response()->json(['status' => 'File merged successfully','file_path' => $finalPath]);
+        return response()->json(['status' => 'File merged successfully', 'file_path' => $finalPath]);
     }
 }

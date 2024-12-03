@@ -8,14 +8,10 @@ use Illuminate\View\Component;
 
 class ChunkFileUploadInput extends Component
 {
-
     /**
      * Create a new component instance.
      */
-    public function __construct(public string $suffix = '1', public string $containerClass = '')
-    {
-
-    }
+    public function __construct(public string $suffix = '1', public string $containerClass = '') {}
 
     /**
      * Get the view / contents that represent the component.
