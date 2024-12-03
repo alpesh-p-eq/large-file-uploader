@@ -19,12 +19,14 @@ class LargeFileUploaderServiceProvider extends PackageServiceProvider
             ->name('large-file-uploader')
             ->hasConfigFile()
             ->hasAssets()
+            ->hasRoute('web')
             ->hasViewComponent('chunk-file-upload-input','ChunkFileUploadInput')
             ->hasViews()
             ->hasInstallCommand(function(InstallCommand $command) {
                 $command
                     ->publishConfigFile()
                     ->publishAssets()
+                    ->publish('web')
                     ->publish('components');
             });
     }
